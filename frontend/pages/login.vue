@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 const isPreloader = ref(true)
 import { useUsersStore } from '~/store/usersStore'
 const { loginHandler, loginFormData } = useUsersStore()
+// а здесь надо бы опять getMe сделать / наверное через emit в app.vue
 onMounted(() => {
   setTimeout(() => {
     isPreloader.value = false;

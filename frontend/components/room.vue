@@ -74,8 +74,8 @@ onMounted(() => {
             </svg>
             Комментарии (2)
           </p>
-          <span v-if="room.room_best_offer" class="badge bg-danger px-3 py-3">
-            Лучшее предложение
+          <span v-if="room.room_best_offer" class="badge bg-danger px-3 py-2">
+            ЛУЧШЕЕ ПРЕДЛОЖЕНИЕ
           </span>
         </div>
         <div>

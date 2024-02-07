@@ -65,7 +65,7 @@ const updatePostHandler = async () => {
   })
   addImageHandler()
   successPost.value = true
-  // а здесь надо бы опять fetch постов сделать 
+  // а здесь надо бы опять fetch постов сделать / наверное через emit в app.vue
 }
 
 onMounted(() => {
