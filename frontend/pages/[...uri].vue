@@ -23,7 +23,7 @@ const { smth } = useAnimate(
   },
 )
 
-const successPost = ref(false)
+const success = ref(false)
 
 const file = ref(null)
 const onChange = (e) => {
@@ -64,8 +64,10 @@ const updatePostHandler = async () => {
     }
   })
   addImageHandler()
-  successPost.value = true
-  // а здесь надо бы опять fetch постов сделать / наверное через emit в app.vue
+  success.value = true
+  setTimeout(() => {
+    reloadNuxtApp()
+  }, 1500)
 }
 
 onMounted(() => {
@@ -78,14 +80,6 @@ onMounted(() => {
 <template>
   <Preloader v-show="isPreloader"></Preloader>
   <div class="container mt-5">
-    <div v-if="successPost" class="alert alert-success alert-dismissible fade show w-100 p-3 mb-0" role="alert">
-      <h4 class="alert-heading">Пост обновлен</h4>
-      <hr />
-      <p class="text-muted">
-        Вернуться на
-        <NuxtLink to="/"><u>Главную</u></NuxtLink>
-      </p>
-    </div>
     <h1 ref="el" class="animated card-title text-center">Редактирование поста</h1>
     <p class="text-center">Выберите категорию поста</p>
     <form v-if="emailLocalStorage == post.user_email && checkAuth.isAuth.value" @submit.prevent="updatePostHandler">
@@ -107,6 +101,14 @@ onMounted(() => {
         Сохранить
       </button>
     </form>
+    <div v-if="success" class="alert alert-success alert-dismissible fade show w-100 p-3 mb-0" role="alert">
+      <h4 class="alert-heading">Пост обновлен</h4>
+      <hr />
+      <p class="text-muted">
+        Вернуться на
+        <NuxtLink to="/"><u>Главную</u></NuxtLink>
+      </p>
+    </div>
     <div class="card mb-3">
       <div class="row g-0 align-items-center">
         <div class="col-md-3">

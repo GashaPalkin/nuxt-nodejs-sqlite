@@ -21,7 +21,7 @@ const { smth } = useAnimate(
   },
 )
 
-const successPost = ref(false)
+const success = ref(false)
 const currentCategoryID = ref(1)
 const currenUserID = ref(null)
 const getCurrentCategoryID = (id) => { currentCategoryID.value = id }
@@ -47,6 +47,8 @@ const addImageHandler = async () => {
   })
 }
 
+const newAddedPost = ref(null)
+
 const addPostHandler = async () => {
   const { data: responseData } = await useFetch(`${BASE_URL}/api/post`, {
     method: 'post',
@@ -58,9 +60,15 @@ const addPostHandler = async () => {
       user_id: currenUserID.value
     }
   })
+
   addImageHandler()
-  successPost.value = true
-  // а здесь надо бы опять fetch постов сделать / наверное через emit в app.vue
+  const lastPostID = responseData.value.id
+  const { data: post } = await useFetch(`${BASE_URL}/api/post/${lastPostID}`)
+  newAddedPost.value = post.value
+  success.value = true
+  setTimeout(() => {
+    reloadNuxtApp()
+  }, 2000)
 }
 
 onMounted(() => {
@@ -75,15 +83,8 @@ onMounted(() => {
 
 <template>
   <Preloader v-show="isPreloader"></Preloader>
-  <div class="container mt-5">
-    <div v-if="successPost" class="alert alert-success alert-dismissible fade show w-100 p-3 mb-0" role="alert">
-      <h4 class="alert-heading">Пост добавлен</h4>
-      <hr />
-      <p class="text-muted">
-        Вернуться на
-        <NuxtLink to="/"><u>Главную</u></NuxtLink>
-      </p>
-    </div>
+  <div class="container mt-5 p-4">
+
     <h1 ref="el" class="animated card-title text-center">Добавление поста</h1>
     <p class="text-center">Выберите категорию поста</p>
     <form enctype="multipart/form-data" @submit.prevent="addPostHandler">
@@ -93,7 +94,28 @@ onMounted(() => {
           {{ category.category_title }}
         </span>
       </div>
-
+      <div v-if="success" class="alert alert-success alert-dismissible fade show w-100 p-3 mb-0" role="alert">
+        <h4 class="alert-heading">Пост добавлен</h4>
+        <hr />
+        <p class="text-muted">
+          Перезагрузка страницы...
+        </p>
+      </div>
+      <div v-if="newAddedPost" class="card mb-3">
+        <div class="row g-0 align-items-center">
+          <div class="col-md-3">
+            <img :src="newAddedPost.post_image" class="img-fluid" alt="cat">
+          </div>
+          <div class="col-md-9">
+            <div class="card-body">
+              <h3 class="card-title">{{ newAddedPost.post_title }}</h3>
+              <p class="card-text"><small class="text-muted">by {{ newAddedPost.user_name }} / {{
+                newAddedPost.category_title }}</small></p>
+              <p class="card-text">{{ newAddedPost.post_content }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="form-outline">
         <input v-model="postFormData.title" type="text" id="field-name" name="title" placeholder="Заголовок"
           class="form-control" />

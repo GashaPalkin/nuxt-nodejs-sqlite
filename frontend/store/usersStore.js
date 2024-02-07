@@ -38,10 +38,8 @@ export const useUsersStore = defineStore('usersStore', () => {
     } else {
       localStorage.removeItem('TOKEN')
       localStorage.removeItem('USER_EMAIL')
-    }
-    console.log(responseData.value)
-    getMeHandler()
-    return navigateTo("/");
+    }    
+    return reloadNuxtApp()
   }
 
   const registerFormData = ref({
@@ -65,10 +63,8 @@ export const useUsersStore = defineStore('usersStore', () => {
     } else {
       localStorage.removeItem('TOKEN')
       localStorage.removeItem('USER_EMAIL')
-    }
-    console.log(responseData.value)
-    getMeHandler()
-    return navigateTo("/");
+    }   
+    return reloadNuxtApp()
   }
 
   const logoutHandler = () => {

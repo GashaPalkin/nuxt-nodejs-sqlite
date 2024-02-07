@@ -31,9 +31,9 @@ const totalPrice = ref(null)
 const addReservationRoom = async () => {
   const addReserv = await useFetch(`${BASE_URL}/api/reserving/${room.room_id}`, {
     method: 'post',
-    body: {    
+    body: {
       date_in: useDateFormat(dateIn, formatterForReserve),
-      date_out: useDateFormat(dateOut, formatterForReserve),    
+      date_out: useDateFormat(dateOut, formatterForReserve),
       room_id: room.value.room_id
     }
   })
@@ -64,8 +64,7 @@ onMounted(() => {
       <h4 class="alert-heading">Вы успешно забронировали комнату!</h4>
       <hr />
       <p class="text-muted">
-        Вернуться на
-        <NuxtLink to="/"><u>Главную</u></NuxtLink>
+        Перезагрузка страницы...
       </p>
     </div>
     <div class="card p-4">
