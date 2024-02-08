@@ -58,7 +58,7 @@ class PostController {
       if (err) {
         return console.error(err.message);
       }
-      console.log(`Row(s) updated: ${this.changes}`);
+      // console.log(`Row(s) updated: ${this.changes}`);
       res.json({
         message: "success",
         "data": {

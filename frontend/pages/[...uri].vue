@@ -105,8 +105,7 @@ onMounted(() => {
       <h4 class="alert-heading">Пост обновлен</h4>
       <hr />
       <p class="text-muted">
-        Вернуться на
-        <NuxtLink to="/"><u>Главную</u></NuxtLink>
+        Перезагрузка страницы...
       </p>
     </div>
     <div class="card mb-3">

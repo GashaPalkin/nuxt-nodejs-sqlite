@@ -32,6 +32,7 @@ onMounted(() => {
   setTimeout(() => {
     getMeHandler()
   }, 0)
+  // sessionStorage.removeItem('NEW_ADDED_POST')  
 })
 </script>
 <template>

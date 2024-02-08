@@ -35,7 +35,6 @@ const postFormData = ref({
 const file = ref(null)
 const onChange = (e) => {
   file.value = e.target.files[0]
-  // console.log(file.value.name)
 }
 
 const formData = new FormData();
@@ -60,15 +59,17 @@ const addPostHandler = async () => {
       user_id: currenUserID.value
     }
   })
-
   addImageHandler()
+  // чтобы показать данные из созданного поста
   const lastPostID = responseData.value.id
   const { data: post } = await useFetch(`${BASE_URL}/api/post/${lastPostID}`)
   newAddedPost.value = post.value
+
+  sessionStorage.setItem('NEW_ADDED_POST', JSON.stringify(post.value))
   success.value = true
   setTimeout(() => {
     reloadNuxtApp()
-  }, 2000)
+  }, 3000)
 }
 
 onMounted(() => {
@@ -77,14 +78,14 @@ onMounted(() => {
   }, 0);
   const emailLocalStorage = typeof window !== 'undefined' ? localStorage.getItem('USER_EMAIL') : null
   const getCurrentUser = users.filter(user => user.user_email === emailLocalStorage)
-  currenUserID.value = getCurrentUser[0].user_id
+  currenUserID.value = getCurrentUser[0].user_id 
+  newAddedPost.value = JSON.parse(sessionStorage.getItem('NEW_ADDED_POST'))
 })
 </script>
 
 <template>
   <Preloader v-show="isPreloader"></Preloader>
   <div class="container mt-5 p-4">
-
     <h1 ref="el" class="animated card-title text-center">Добавление поста</h1>
     <p class="text-center">Выберите категорию поста</p>
     <form enctype="multipart/form-data" @submit.prevent="addPostHandler">
@@ -100,9 +101,10 @@ onMounted(() => {
         <p class="text-muted">
           Перезагрузка страницы...
         </p>
-      </div>
+      </div>      
       <div v-if="newAddedPost" class="card mb-3">
         <div class="row g-0 align-items-center">
+          <p class="p-3"><b>Последний Ваш созданный пост</b></p>
           <div class="col-md-3">
             <img :src="newAddedPost.post_image" class="img-fluid" alt="cat">
           </div>
@@ -111,7 +113,7 @@ onMounted(() => {
               <h3 class="card-title">{{ newAddedPost.post_title }}</h3>
               <p class="card-text"><small class="text-muted">by {{ newAddedPost.user_name }} / {{
                 newAddedPost.category_title }}</small></p>
-              <p class="card-text">{{ newAddedPost.post_content }}</p>
+              <p class="card-text">{{ newAddedPost.post_content }}</p>             
             </div>
           </div>
         </div>
